@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.gogole.map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
