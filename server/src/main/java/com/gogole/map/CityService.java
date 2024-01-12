@@ -9,7 +9,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CityService {
@@ -35,6 +37,16 @@ public class CityService {
 				.filter(city -> city.getName().equalsIgnoreCase(name))
 				.findFirst()
 				.orElse(null); // Retournez null si la ville n'est pas trouvée
+	}
+
+
+	public List<City> getNearestCities(double latitude, double longitude, int nb, int radius) {
+		// Exemple simplifié : retourne les 10 premières villes de la liste
+		return cities.stream()
+				.sorted(Comparator.comparingDouble(city ->
+						Math.sqrt(Math.pow(city.getLatitude() - latitude, 2) + Math.pow(city.getLongitude() - longitude, 2))))
+				.limit(nb)
+				.collect(Collectors.toList());
 	}
 
 	public City createCity(City city){

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
+@RequestMapping("/api/cities")
 public class CityController {
 
 	private final CityService cityService;
@@ -17,7 +17,7 @@ public class CityController {
 		this.cityService = cityService;
 	}
 
-	@RequestMapping("/api/cities")
+
 	public List<City> getAllCities() {
 		return cityService.getAllCities();
 	}
@@ -27,6 +27,15 @@ public class CityController {
 		return cityService.getCityByName(name);
 	}
 
+	@GetMapping("/nearest")
+	public ResponseEntity<List<City>> getNearestCities(@RequestParam double latitude,
+													   @RequestParam double longitude,
+													   @RequestParam int nb,
+													   @RequestParam int radius) {
+
+		List<City> nearestCities = cityService.getNearestCities(latitude, longitude, nb, radius);
+		return new ResponseEntity<>(nearestCities, HttpStatus.OK);
+	}
 
 	@PostMapping
 	public ResponseEntity<City> createCity(@RequestBody City city) {
