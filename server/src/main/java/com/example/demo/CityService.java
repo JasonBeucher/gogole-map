@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class CityService {
 
-	private final String jsonFilePath = "../application-architecture/fr-10.json";
+	private final String jsonFilePath = "assets/fr.json";
 	private List<City> cities;
 
 	public CityService() {
