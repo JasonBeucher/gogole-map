@@ -33,7 +33,7 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - cd server
-    - ls
+    - ls -a
     - mvn $MAVEN_CLI_OPTS compile
     - echo "Compile complete."
 
