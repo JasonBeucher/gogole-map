@@ -3,6 +3,7 @@ package com.gogole.map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.Setter;
 
 
 @Data
@@ -12,6 +13,8 @@ public class City {
 	private double longitude;
 	private String region;
 	private int population;
+	@Setter
+	private double distance;
 
 	@JsonCreator
 	public City(
@@ -45,4 +48,7 @@ public class City {
 	public int getPopulation() {
 		return population;
 	}
+
+	public double getDistance() { return this.distance; }
+
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,12 +42,20 @@ public class CityService {
 
 
 	public List<City> getNearestCities(double latitude, double longitude, int nb, int radius) {
-		// Exemple simplifié : retourne les 10 premières villes de la liste
-		return cities.stream()
-				.sorted(Comparator.comparingDouble(city ->
-						Math.sqrt(Math.pow(city.getLatitude() - latitude, 2) + Math.pow(city.getLongitude() - longitude, 2))))
-				.limit(nb)
-				.collect(Collectors.toList());
+		List<City> nearestCities = new ArrayList<>();
+
+		// Exemple : triez les villes par distance (à remplacer par votre logique)
+		cities.sort(Comparator.comparingDouble(city ->
+				calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude)));
+
+		// Exemple : limitez le nombre de villes à retourner
+		nearestCities = cities.stream().limit(nb).collect(Collectors.toList());
+
+		// Exemple : mettez à jour la distance pour chaque ville
+		nearestCities.forEach(city -> city.setDistance(
+				calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude)));
+
+		return nearestCities;
 	}
 
 	public City createCity(City city){
@@ -82,6 +91,22 @@ public class CityService {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	// Implémentation de la formule de Haversine pour calculer la distance en kilomètres
+	private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+		final int R = 6371; // Rayon moyen de la Terre en kilomètres
+
+		double dLat = Math.toRadians(lat2 - lat1);
+		double dLon = Math.toRadians(lon2 - lon1);
+
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+				Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+						Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+		return R * c; // Distance en kilomètres
 	}
 
 	public City updateCity(String name, City updatedCity) {
