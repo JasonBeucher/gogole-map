@@ -20,7 +20,7 @@ image: maven:latest
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - deploy
+  - test
 
 variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
@@ -37,9 +37,9 @@ build-job:       # This job runs in the build stage, which runs first.
     - "mvn compile"
     - echo "Compile complete."
 
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
+test-job:      # This job runs in the deploy stage.
+  stage: test  # It only runs when *both* jobs in the test stage complete successfully.
+  #environment: production
   script:
-    - echo "Deploying application..."
+    - "mvn test"
     - echo "Application successfully deployed."
