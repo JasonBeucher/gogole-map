@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "axios": "^1.6.5",
+    "cypress": "^13.6.2",
+    "express": "^4.18.2"
+  },
+  "name": "client",
+  "version": "1.0.0",
+  "description": "Gogole Map Client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

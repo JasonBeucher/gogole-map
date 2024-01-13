@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gogol Map</title>
+    <link rel="stylesheet" href="style/style.css">
+    <script src="script/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .map-container {
+            position: relative;
+            width: 850px;
+            height: 850px;
+            text-align: center;
+        }
+
+        #marker {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+
+            pointer-events: none;
+        }
+    </style>
+    <div class="container">
+        <div class="map-container" id="map-container">
+            <img src="medias/carte.png" alt="" id="map-img" onclick="placeMarker(event)">
+            <div class="marker">
+                <div id="info-box" style="position: absolute; display: none;">
+                    <p id="gps-coordinates"></p>
+                </div>
+                <img src="medias/marker.png" alt="" id="marker">
+            </div>
+        </div>
+        <div class="filter-container">
+            <button onclick="callApi()">Call API</button>
+            <input type="range" min="0" max="200" value="50" class="slider" id="cityNb">
+            <span id="cityNbValue"></span>
+
+            <input type="range" min="0" max="200" value="50" class="slider" id="rangeKm">
+            <span id="rangeKmValue"></span>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('cityNb').addEventListener('input', function () {
+            document.getElementById('cityNbValue').textContent = this.value;
+        });
+
+        document.getElementById('rangeKm').addEventListener('input', function () {
+            document.getElementById('rangeKmValue').textContent = this.value;
+        });
+        const carteWidth = 850;
+        const carteHeight = 850;
+        const coordCoinHautGauche = [51.29882174293374, -5.432754245480544];
+        const coordCoinBasDroit = [41.70469610254452, 8.529800125775425];
+
+
+        /*
+        * Fonction qui convertit des coordonnées en pixels en coordonnées en degrés
+        */
+        function pixelsToDegrees(x, y) {
+            const coordCoinHautGauche = [51.39882174293374, -5.332754245480544];
+            const coordCoinBasDroit = [41.70469610254452, 8.529800125775425];
+            const carteWidth = 850;
+            const carteHeight = 850;
+            const latitude = coordCoinHautGauche[0] - (y / carteHeight) * (coordCoinHautGauche[0] - coordCoinBasDroit[0]);
+            const longitude = coordCoinHautGauche[1] + (x / carteWidth) * (coordCoinBasDroit[1] - coordCoinHautGauche[1]);
+            return { latitude: latitude, longitude: longitude };
+        }
+
+        /*
+        * Fonction qui convertit des coordonnées en degrés en coordonnées en pixels
+        */
+        function getCoordinates(event) {
+            var img = document.getElementById('map-img');
+            var rect = img.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+            var coord = pixelsToDegrees(x, y)
+            console.log(coord)
+            return coord;
+        }
+
+        /*
+        * Fonction qui place le marqueur sur la carte
+        */
+        function placeMarker(event) {
+            var mapContainer = document.getElementById('map-container');
+            var marker = document.getElementById('marker');
+            var xPercentage = (event.clientX - mapContainer.offsetLeft) / mapContainer.offsetWidth * 100;
+            var yPercentage = (event.clientY - mapContainer.offsetTop) / mapContainer.offsetHeight * 100;
+            marker.style.left = xPercentage + '%';
+            marker.style.top = yPercentage + '%';
+            marker.style.transform = 'translate(-50%, -60%)';
+            var coord = getCoordinates(event);
+            var infoBox = document.getElementById('info-box');
+            var gpsCoordinates = document.getElementById('gps-coordinates');
+            gpsCoordinates.textContent = 'Latitude: ' + coord.latitude.toFixed(2) + ', Longitude: ' + coord.longitude.toFixed(2);
+            infoBox.style.display = 'block';
+            infoBox.style.left = marker.style.left;
+            infoBox.style.top = (parseFloat(marker.style.top) - 10) + '%'; // Position the info box above the marker
+            infoBox.style.transform = 'translate(-50%, 0)'; // Center the info box horizontally relative to the marker
+        }
+
+        /*
+        * Fonction pour afficher les villes sur la carte
+        */
+        function showCities(cities) {
+            callApi(latitude, longitude, nb, radius)
+                .then(data => {
+                    var cities = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        /*
+        * Fonction pour appeler l'API
+        */
+        function callApi(latitude, longitude, nb, radius) {
+            return $.ajax({
+                url: 'http://localhost:3000/api?latitude=' + latitude + '&longitude=' + longitude + '&nb=' + nb + '&radius=' + radius,
+                type: 'GET'
+            });
+        }
+    </script>
+</body>
+
+</html>
