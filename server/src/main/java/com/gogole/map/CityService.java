@@ -2,6 +2,7 @@ package com.gogole.map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class CityService {
 
 	private final String jsonFilePath = "assets/fr.json";
+	@Setter
 	private List<City> cities;
 
 	public CityService() {
@@ -44,19 +46,23 @@ public class CityService {
 	public List<City> getNearestCities(double latitude, double longitude, int nb, int radius) {
 		List<City> nearestCities = new ArrayList<>();
 
-		// Exemple : triez les villes par distance (à remplacer par votre logique)
+		// Triez les villes par distance
 		cities.sort(Comparator.comparingDouble(city ->
 				calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude)));
 
-		// Exemple : limitez le nombre de villes à retourner
-		nearestCities = cities.stream().limit(nb).collect(Collectors.toList());
+		// Filtrez les villes dans le rayon spécifié et limitez le nombre de villes à retourner
+		nearestCities = cities.stream()
+				.filter(city -> calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude) <= radius)
+				.limit(nb)
+				.collect(Collectors.toList());
 
-		// Exemple : mettez à jour la distance pour chaque ville
+		// Mettez à jour la distance pour chaque ville
 		nearestCities.forEach(city -> city.setDistance(
 				calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude)));
 
 		return nearestCities;
 	}
+
 
 	public City createCity(City city){
 		cities.add(city);
@@ -94,7 +100,7 @@ public class CityService {
 	}
 
 	// Implémentation de la formule de Haversine pour calculer la distance en kilomètres
-	private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+	double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 		final int R = 6371; // Rayon moyen de la Terre en kilomètres
 
 		double dLat = Math.toRadians(lat2 - lat1);
@@ -140,4 +146,5 @@ public class CityService {
 			return false; // Retournez false si la ville n'est pas trouvée
 		}
 	}
+
 }
