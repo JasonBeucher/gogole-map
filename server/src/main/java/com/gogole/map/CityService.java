@@ -46,19 +46,23 @@ public class CityService {
 	public List<City> getNearestCities(double latitude, double longitude, int nb, int radius) {
 		List<City> nearestCities = new ArrayList<>();
 
-		// Exemple : triez les villes par distance (à remplacer par votre logique)
+		// Triez les villes par distance
 		cities.sort(Comparator.comparingDouble(city ->
 				calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude)));
 
-		// Exemple : limitez le nombre de villes à retourner
-		nearestCities = cities.stream().limit(nb).collect(Collectors.toList());
+		// Filtrez les villes dans le rayon spécifié et limitez le nombre de villes à retourner
+		nearestCities = cities.stream()
+				.filter(city -> calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude) <= radius)
+				.limit(nb)
+				.collect(Collectors.toList());
 
-		// Exemple : mettez à jour la distance pour chaque ville
+		// Mettez à jour la distance pour chaque ville
 		nearestCities.forEach(city -> city.setDistance(
 				calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude)));
 
 		return nearestCities;
 	}
+
 
 	public City createCity(City city){
 		cities.add(city);

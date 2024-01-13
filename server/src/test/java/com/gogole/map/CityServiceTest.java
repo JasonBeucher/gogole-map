@@ -43,7 +43,7 @@ class CityServiceTest {
 		cityService.setCities(mockCities);
 
 		// Appel de la méthode à tester
-		List<City> nearestCities = cityService.getNearestCities(48.8566, 2.3522, 2, 50);
+		List<City> nearestCities = cityService.getNearestCities(48.8566, 2.3522, 2, 393);
 
 		// Vérification des résultats
 		// test parametre nb
@@ -56,8 +56,9 @@ class CityServiceTest {
 
 		nearestCities = cityService.getNearestCities(48.8566, 2.3522, 3, 1);
 
+
 		//test radius
-		assertEquals("Paris", nearestCities.get(0).getName());
+		assertEquals("Paris", nearestCities.getFirst().getName());
 		assertEquals(1, nearestCities.size());
 
 	}
