@@ -40,7 +40,10 @@
                 <div id="info-box" style="position: absolute; display: none;">
                     <p id="gps-coordinates"></p>
                 </div>
-                <img src="medias/marker.png" alt="" id="marker">
+                <img src="medias/marker.png" alt="" id="marker" hidden>
+            </div>
+            <div class="cities">
+                <img src="medias/blue_marker.png" alt="" id="marker" hidden>
             </div>
         </div>
         <div class="filter-container">
@@ -54,6 +57,8 @@
     </div>
 
     <script>
+        document.getElementById('map-img').ondragstart = function() { return false; };
+        
         document.getElementById('cityNb').addEventListener('input', function () {
             document.getElementById('cityNbValue').textContent = this.value;
         });
@@ -79,7 +84,15 @@
             const longitude = coordCoinHautGauche[1] + (x / carteWidth) * (coordCoinBasDroit[1] - coordCoinHautGauche[1]);
             return { latitude: latitude, longitude: longitude };
         }
-
+        function degreesToPixel(latitude, longitude) {
+            const coordCoinHautGauche = [51.39882174293374, -5.332754245480544];
+            const coordCoinBasDroit = [41.70469610254452, 8.529800125775425];
+            const carteWidth = 850;
+            const carteHeight = 850;
+            const x = carteWidth * (longitude - coordCoinHautGauche[1]) / (coordCoinBasDroit[1] - coordCoinHautGauche[1]);
+            const y = carteHeight * (coordCoinHautGauche[0] - latitude) / (coordCoinHautGauche[0] - coordCoinBasDroit[0]);
+            return { x: x, y: y };
+        }
         /*
         * Fonction qui convertit des coordonnées en degrés en coordonnées en pixels
         */
@@ -101,6 +114,7 @@
             var marker = document.getElementById('marker');
             var xPercentage = (event.clientX - mapContainer.offsetLeft) / mapContainer.offsetWidth * 100;
             var yPercentage = (event.clientY - mapContainer.offsetTop) / mapContainer.offsetHeight * 100;
+            marker.hidden = false;
             marker.style.left = xPercentage + '%';
             marker.style.top = yPercentage + '%';
             marker.style.transform = 'translate(-50%, -60%)';
@@ -112,15 +126,34 @@
             infoBox.style.left = marker.style.left;
             infoBox.style.top = (parseFloat(marker.style.top) - 10) + '%'; // Position the info box above the marker
             infoBox.style.transform = 'translate(-50%, 0)'; // Center the info box horizontally relative to the marker
+            var latitude = coord.latitude;
+            var longitude = coord.longitude;
+            var nb = document.getElementById('cityNb').value;
+            var radius = document.getElementById('rangeKm').value;
+            callApi(latitude, longitude, nb, radius);
         }
 
         /*
         * Fonction pour afficher les villes sur la carte
         */
-        function showCities(cities) {
+        function showCities(latitude, longitude, nb, radius) {
             callApi(latitude, longitude, nb, radius)
                 .then(data => {
                     var cities = data;
+                    for (var i = 0; i < cities.length; i++) {
+                        var city = cities[i];
+                        var cityCoordinates = degreesToPixel(city.latitude, city.longitude);
+                        var cityMarker = document.createElement('img');
+                        cityMarker.src = 'medias/blue_marker.png';
+                        cityMarker.style.position = 'absolute';
+                        cityMarker.style.width = '20px';
+                        cityMarker.style.height = '20px';
+                        cityMarker.style.left = cityCoordinates.x + 'px';
+                        cityMarker.style.top = cityCoordinates.y + 'px';
+                        cityMarker.style.transform = 'translate(-50%, -50%)';
+                        document.getElementById('map-container').appendChild(cityMarker);
+                    }
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -131,9 +164,30 @@
         * Fonction pour appeler l'API
         */
         function callApi(latitude, longitude, nb, radius) {
-            return $.ajax({
+            $.ajax({
                 url: 'http://localhost:3000/api?latitude=' + latitude + '&longitude=' + longitude + '&nb=' + nb + '&radius=' + radius,
-                type: 'GET'
+                type: 'GET',
+                success: function (data) {
+                    var cities = data;
+                    for (var i = 0; i < cities.length; i++) {
+                        var city = cities[i];
+                        var cityCoordinates = degreesToPixel(city.latitude, city.longitude);
+                        var cityMarker = document.createElement('img');
+                        cityMarker.src = 'medias/blue_marker.png';
+                        cityMarker.style.position = 'absolute';
+                        cityMarker.style.width = '20px';
+                        cityMarker.style.height = '20px';
+                        cityMarker.style.left = cityCoordinates.x + 'px';
+                        cityMarker.style.top = cityCoordinates.y + 'px';
+                        cityMarker.style.transform = 'translate(-50%, -50%)';
+                        document.getElementById('map-container').appendChild(cityMarker);
+                    }
+
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+
+                }
             });
         }
     </script>

@@ -2,8 +2,13 @@
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
+const cors = require('cors'); // Import cors module
+
 // Create an instance of express
 const app = express();
+
+// Use cors middleware
+app.use(cors());
 
 // Serve static files from the "public" directory
 app.use(express.static('public'));
@@ -27,6 +32,7 @@ app.get('/api', async (req, res) => {
     res.status(500).send('An error occurred while calling the external API');
   }
 });
+
 // Start the server on port 3000
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
