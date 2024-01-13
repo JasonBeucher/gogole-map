@@ -2,6 +2,7 @@ package com.gogole.map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class CityService {
 
 	private final String jsonFilePath = "assets/fr.json";
+	@Setter
 	private List<City> cities;
 
 	public CityService() {
@@ -140,4 +142,5 @@ public class CityService {
 			return false; // Retournez false si la ville n'est pas trouvée
 		}
 	}
+
 }
