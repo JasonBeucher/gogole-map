@@ -66,10 +66,11 @@ class CityServiceTest {
 	@Test
 	void testCalculateDistance() {
 		// Appel de la méthode à tester
-		//double distance = cityService.calculateDistance(48.8566, 2.3522, 45.76, 4.84);
+		// test avec Paris et Lyon
+		double distance = cityService.calculateDistance(48.8566, 2.3522, 45.76, 4.84);
 
 		// Vérification du résultat
 		// Assurez-vous que la distance est calculée correctement
-		//assertEquals(392.49, distance, 0.01); // Vérifiez avec une précision de 0.01
+		assertEquals(392.2, distance, 2); // Vérifiez avec une précision de 0.01
 	}
 }

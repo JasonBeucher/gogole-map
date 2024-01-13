@@ -100,7 +100,7 @@ public class CityService {
 	}
 
 	// Implémentation de la formule de Haversine pour calculer la distance en kilomètres
-	private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+	double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 		final int R = 6371; // Rayon moyen de la Terre en kilomètres
 
 		double dLat = Math.toRadians(lat2 - lat1);
