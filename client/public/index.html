@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Gogol Map</title>
+    <title>Gogole Maps</title>
+    <link rel="icon" href="medias/favico.png" type="image/png">
     <link rel="stylesheet" href="style/style.css">
     <script src="script/script.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -17,6 +18,10 @@
 
 <body>
     <style>
+        body {
+            background-color: #C6ECFF;
+        }
+
         .container {
             display: flex;
             justify-content: center;
@@ -50,42 +55,95 @@
             transform: translate(-50%, -50%) scale(1.5);
         }
 
-        .city-item {
+        #city-list {
+            height: 500px;
+            overflow-y: auto;
             list-style-type: none;
-            border-bottom: 1px solid #000;
+            padding: 0;
+            margin: 0;
+            scrollbar-width: thin;
+        }
+
+        .city-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .city-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        #infoBox {
+            position: fixed;
+            top: 10px;
+            width: 300px;
+            height: auto;
+            overflow: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            display: none;
+        }
+        #logo{
+            width: 50%; 
+            margin: 14px 22px;
         }
     </style>
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <nav class="col-md-2 d-none d-md-block bg-white sidebar">
                 <div class="sidebar-sticky">
+                    <img id="logo" src="medias/logo.png" alt="Gogole Maps">
+
                     <h6
                         class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span>Filters</span>
                     </h6>
                     <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
+                        <div class="nav-item">
                             <div class="nav-link">
-                                <label for="citySlider">Number of Cities</label>
-                                <input name="citySlider" type="range" min="0" max="200" value="50" class="slider"
-                                    id="cityNb">
-                                <span id="cityNbValue"></span>
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <div style="display: flex; flex-direction: column;">
+                                        <label for="citiesSlider">Number of Cities</label>
+                                        <input name="citiesSlider" type="range" min="0" max="200" value="50"
+                                            class="slider" id="citiesNum">
+                                    </div>
+                                    <span id="citiesNumValue">50</span>
+                                </div>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <div class="nav-link">
-                                <label for="rangeSlider">Range (Km)</label>
-                                <input name="rangeSlider" type="range" min="0" max="200" value="50" class="slider"
-                                    id="rangeKm">
-                                <span id="rangeKmValue"></span>
-                            </div>
-                        </li>
+                            </li>
+                            <div class="nav-item">
+                                <div class="nav-link">
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <label for="rangeSlider">Range (Km)</label>
+                                            <input name="rangeSlider" type="range" min="0" max="200" value="50"
+                                                class="slider" id="rangeKm">
+                                        </div>
+                                        <span id="rangeKmValue">50</span>
+                                    </div>
+                                </div>
+                                </li>
+                                <div class="nav-item">
+                                    <div class="nav-link">
+                                        <div
+                                            style="display: flex; align-items: center; justify-content: space-between;">
+                                            <div style="display: flex; flex-direction: column;">
+                                                <label for="rangeSlider">Population</label>
+                                                <input name="rangeSlider" type="range" min="0" max="200" value="50"
+                                                    class="slider" id="rangeKm">
+                                            </div>
+                                            <span id="rangeKmValue">50</span>
+                                        </div>
+                                    </div>
+                                    </li>
                     </ul>
-          
-                            <h2>Villes</h2>
-                            <ul id="city-list"></ul>
-                 
-                 
+                    <!-- Divider -->
+                    <hr class="sidebar-divider" style="height:0.2px;">
+                    <ul id="city-list"></ul>
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
@@ -104,20 +162,37 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div id="infoBox" style="display: none;">
+                        <div id="closeInfoBox" style="position: absolute; top: 0; right: 0;">&times;</div>
+                        <h2 id="cityName"></h2>
+                        <p id="cityInfo"></p>
+                    </div>
+                </div>
             </main>
+
         </div>
     </div>
 
     <script>
-        document.getElementById('map-img').ondragstart = function () { return false; };
+        var mapImg = document.getElementById('map-img');
+        var citiesNum = document.getElementById('citiesNum');
+        var rangeKm = document.getElementById('rangeKm');
 
-        document.getElementById('cityNb').addEventListener('input', function () {
-            document.getElementById('cityNbValue').textContent = this.value;
+        citiesNum.value = 50;
+        rangeKm.value = 50;
+        mapImg.ondragstart = function () { return false; };
+        citiesNum.addEventListener('input', function () {
+            document.getElementById('citiesNumValue').textContent = this.value;
         });
 
-        document.getElementById('rangeKm').addEventListener('input', function () {
+        rangeKm.addEventListener('input', function () {
             document.getElementById('rangeKmValue').textContent = this.value;
         });
+
+        document.getElementById('closeInfoBox').addEventListener('click', function() {
+    document.getElementById('infoBox').style.display = 'none';
+});
         const coordCoinHautGauche = [51.39882174293374, -5.332754245480544];
         const coordCoinBasDroit = [41.70469610254452, 8.529800125775425];
         const carteWidth = 850;
@@ -172,7 +247,7 @@
             infoBox.style.transform = 'translate(-50%, 0)';
             var latitude = coord.latitude;
             var longitude = coord.longitude;
-            var nb = document.getElementById('cityNb').value;
+            var nb = document.getElementById('citiesNum').value;
             var radius = document.getElementById('rangeKm').value;
             showCities(latitude, longitude, nb, radius);
         }
@@ -199,9 +274,10 @@
                         cityMarker.hidden = false;
                         cityMarker.style.left = cityCoordinates.x + 'px';
                         cityMarker.style.top = cityCoordinates.y + 'px';
-                        cityMarker.title = 'City: ' + city.name + ', Distance: ' + city.distance;
+                        cityMarker.title = 'City: ' + city.name + ', \n Distance: ' + city.distance.toFixed(0) + ' km';
+                        cityMarker.id = 'city-marker-' + i; // Ajoutez un identifiant unique
                         document.getElementById('map-container').appendChild(cityMarker);
-                        citiesList(city);
+                        citiesList(city, i); // Passez l'index à la fonction citiesList
                     }
                     // Initialise les tooltips
                     $('[data-toggle="tooltip"]').tooltip();
@@ -214,22 +290,49 @@
         /*
         * Fonction pour afficher la liste des villes
         */
-        function citiesList(city) {
+        function citiesList(city, index) {
             var cityList = document.getElementById('city-list');
+            var cityMarker = document.getElementById('city-marker-' + index);
             var listItem = document.createElement('li');
-            listItem.classList.add('city-item');
-            listItem.style.width = 'fit-content'
-            var details = document.createElement('details');
             var summary = document.createElement('summary');
+
+            listItem.classList.add('city-item');
+            listItem.id = 'city-item-' + index; // Ajoutez un identifiant unique
             summary.textContent = city.name;
-            details.appendChild(summary);
 
-            var info = document.createElement('p');
-            info.textContent = 'Distance: ' + city.distance;
-            details.appendChild(info);
-
-            listItem.appendChild(details);
+            listItem.appendChild(summary);
             cityList.appendChild(listItem);
+
+            // Ajoutez des gestionnaires d'événements pour les événements mouseover et mouseout
+            listItem.addEventListener('mouseover', function () {
+                document.getElementById('city-marker-' + index).style.transform = 'translate(-50%, -50%) scale(1.5)';
+                $('#city-marker-' + index).tooltip('show');
+
+            });
+            listItem.addEventListener('mouseout', function () {
+                document.getElementById('city-marker-' + index).style.transform = 'translate(-50%, -50%)';
+                $('#city-marker-' + index).tooltip('hide');
+            });
+            cityMarker.addEventListener('mouseover', function () {
+                listItem.style.backgroundColor = '#f5f5f5';
+                listItem.style.fontWeight = 'bold';
+                listItem.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+            });
+            cityMarker.addEventListener('mouseout', function () {
+                listItem.style.backgroundColor = '';
+                listItem.style.fontWeight = '';
+            });
+
+            listItem.addEventListener('click', function () {
+                var cityName = this.textContent;
+                var cityInfo = city.latitude + ', ' + city.longitude + ', ' + city.population + ', ' + city.distance.toFixed(0) + ' km';
+
+                document.getElementById('cityName').textContent = cityName;
+                document.getElementById('cityInfo').textContent = cityInfo;
+
+
+                document.getElementById('infoBox').style.display = 'block';
+            });
         }
         /*
         * Fonction pour supprimer les marqueurs de villes
