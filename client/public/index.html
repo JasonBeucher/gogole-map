@@ -6,98 +6,24 @@
     <title>Gogole Maps</title>
     <link rel="icon" href="medias/favico.png" type="image/png">
     <link rel="stylesheet" href="style/style.css">
-    <script src="script/script.js"></script>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 </head>
 
 <body>
-    <style>
-        body {
-            background-color: #C6ECFF;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .map-container {
-            position: relative;
-            width: 850px;
-            height: 850px;
-            text-align: center;
-        }
-
-        #marker {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-
-            pointer-events: none;
-        }
-
-        .city-marker {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            transform: translate(-50%, -50%);
-        }
-
-        .city-marker:hover {
-            transform: translate(-50%, -50%) scale(1.5);
-        }
-
-        #city-list {
-            height: 500px;
-            overflow-y: auto;
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            scrollbar-width: thin;
-        }
-
-        .city-item {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 15px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .city-item:hover {
-            background-color: #f5f5f5;
-        }
-
-        #infoBox {
-            position: fixed;
-            top: 10px;
-            width: 300px;
-            height: auto;
-            overflow: auto;
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 10px;
-            box-sizing: border-box;
-            display: none;
-        }
-        #logo{
-            width: 50%; 
-            margin: 14px 22px;
-        }
-    </style>
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+                
                 <div class="sidebar-sticky">
                     <img id="logo" src="medias/logo.png" alt="Gogole Maps">
-
                     <h6
                         class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span>Filters</span>
@@ -105,8 +31,8 @@
                     <ul class="nav flex-column mb-2">
                         <div class="nav-item">
                             <div class="nav-link">
-                                <div style="display: flex; align-items: center; justify-content: space-between;">
-                                    <div style="display: flex; flex-direction: column;">
+                                <div class="filter">
+                                    <div class="slider">
                                         <label for="citiesSlider">Number of Cities</label>
                                         <input name="citiesSlider" type="range" min="0" max="200" value="50"
                                             class="slider" id="citiesNum">
@@ -115,10 +41,11 @@
                                 </div>
                             </div>
                             </li>
+
                             <div class="nav-item">
                                 <div class="nav-link">
-                                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                                        <div style="display: flex; flex-direction: column;">
+                                    <div class="filter">
+                                        <div class="slider">
                                             <label for="rangeSlider">Range (Km)</label>
                                             <input name="rangeSlider" type="range" min="0" max="200" value="50"
                                                 class="slider" id="rangeKm">
@@ -129,9 +56,8 @@
                                 </li>
                                 <div class="nav-item">
                                     <div class="nav-link">
-                                        <div
-                                            style="display: flex; align-items: center; justify-content: space-between;">
-                                            <div style="display: flex; flex-direction: column;">
+                                        <div class="filter">
+                                            <div class="slider">
                                                 <label for="rangeSlider">Population</label>
                                                 <input name="rangeSlider" type="range" min="0" max="200" value="50"
                                                     class="slider" id="rangeKm">
@@ -140,18 +66,33 @@
                                         </div>
                                     </div>
                                     </li>
+                                    <div class="nav-item">
+                                        <div class="nav-link">
+                                            <div class="filter">
+                                                <div class="slider">
+                                                    <label for="regionFilter">Region</label>
+                                                    <select id="regionFilter" class="form-control">
+                                                        <option value="">Toutes les regions</option>
+
+                                                        <!-- Other options will be added dynamically -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </li>
                     </ul>
                     <!-- Divider -->
-                    <hr class="sidebar-divider" style="height:0.2px;">
+                    <hr class="sidebar-divider">
                     <ul id="city-list"></ul>
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                
                 <div class="container">
                     <div class="map-container" id="map-container">
                         <img src="medias/carte.png" alt="" id="map-img" onclick="placeMarker(event)">
                         <div class="marker">
-                            <div id="info-box" style="position: absolute; display: none;">
+                            <div id="info-box" class="infoBox position-absolute">
                                 <p id="gps-coordinates"></p>
                             </div>
                             <img src="medias/marker.png" alt="" id="marker" hidden>
@@ -162,11 +103,16 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-3">
-                    <div id="infoBox" style="display: none;">
-                        <div id="closeInfoBox" style="position: absolute; top: 0; right: 0;">&times;</div>
-                        <h2 id="cityName"></h2>
-                        <p id="cityInfo"></p>
+                    <div id="infoBox" class="infoBox">
+                        <i id="closeInfoBox" class="fas fa-times" ></i>
+                        <h2 id="cityName"><i class="fas fa-city"></i></h2>
+                        <p><i class="fas fa-globe-europe"></i> Region: <span id="cityRegion"></span></p>
+                        <p><i class="fas fa-map-marker-alt"></i> Latitude: <span id="cityLatitude"></span></p>
+                        <p><i class="fas fa-map-marker-alt"></i> Longitude: <span id="cityLongitude"></span></p>
+                        <p><i class="fas fa-users"></i> Population: <span id="cityPopulation"></span></p>
+                        <p><i class="fas fa-road"></i> Distance: <span id="cityDistance"></span> km</p>
                     </div>
                 </div>
             </main>
@@ -174,178 +120,7 @@
         </div>
     </div>
 
-    <script>
-        var mapImg = document.getElementById('map-img');
-        var citiesNum = document.getElementById('citiesNum');
-        var rangeKm = document.getElementById('rangeKm');
-
-        citiesNum.value = 50;
-        rangeKm.value = 50;
-        mapImg.ondragstart = function () { return false; };
-        citiesNum.addEventListener('input', function () {
-            document.getElementById('citiesNumValue').textContent = this.value;
-        });
-
-        rangeKm.addEventListener('input', function () {
-            document.getElementById('rangeKmValue').textContent = this.value;
-        });
-
-        document.getElementById('closeInfoBox').addEventListener('click', function() {
-    document.getElementById('infoBox').style.display = 'none';
-});
-        const coordCoinHautGauche = [51.39882174293374, -5.332754245480544];
-        const coordCoinBasDroit = [41.70469610254452, 8.529800125775425];
-        const carteWidth = 850;
-        const carteHeight = 850;
-        /*
-        * Fonction qui convertit des coordonnées en pixels en coordonnées en degrés
-        */
-        function pixelsToDegrees(x, y) {
-
-            const latitude = coordCoinHautGauche[0] - (y / carteHeight) * (coordCoinHautGauche[0] - coordCoinBasDroit[0]);
-            const longitude = coordCoinHautGauche[1] + (x / carteWidth) * (coordCoinBasDroit[1] - coordCoinHautGauche[1]);
-            return { latitude: latitude, longitude: longitude };
-        }
-        function degreesToPixel(latitude, longitude) {
-
-            const x = carteWidth * (longitude - coordCoinHautGauche[1]) / (coordCoinBasDroit[1] - coordCoinHautGauche[1]);
-            const y = carteHeight * (coordCoinHautGauche[0] - latitude) / (coordCoinHautGauche[0] - coordCoinBasDroit[0]);
-            return { x: x, y: y };
-        }
-        /*
-        * Fonction qui convertit des coordonnées en degrés en coordonnées en pixels
-        */
-        function getCoordinates(event) {
-            var img = document.getElementById('map-img');
-            var rect = img.getBoundingClientRect();
-            var x = event.clientX - rect.left;
-            var y = event.clientY - rect.top;
-            var coord = pixelsToDegrees(x, y)
-            console.log(coord)
-            return coord;
-        }
-
-        /*
-        * Fonction qui place le marqueur sur la carte
-        */
-        function placeMarker(event) {
-            var mapContainer = document.getElementById('map-container');
-            var marker = document.getElementById('marker');
-            var xPercentage = (event.clientX - mapContainer.offsetLeft) / mapContainer.offsetWidth * 100;
-            var yPercentage = (event.clientY - mapContainer.offsetTop) / mapContainer.offsetHeight * 100;
-            marker.hidden = false;
-            marker.style.left = xPercentage + '%';
-            marker.style.top = yPercentage + '%';
-            marker.style.transform = 'translate(-50%, -60%)';
-            var coord = getCoordinates(event);
-            var infoBox = document.getElementById('info-box');
-            var gpsCoordinates = document.getElementById('gps-coordinates');
-            gpsCoordinates.textContent = 'Latitude: ' + coord.latitude.toFixed(2) + ', Longitude: ' + coord.longitude.toFixed(2);
-            infoBox.style.display = 'block';
-            infoBox.style.left = marker.style.left;
-            infoBox.style.top = (parseFloat(marker.style.top) - 10) + '%'; // Position the info box above the marker
-            infoBox.style.transform = 'translate(-50%, 0)';
-            var latitude = coord.latitude;
-            var longitude = coord.longitude;
-            var nb = document.getElementById('citiesNum').value;
-            var radius = document.getElementById('rangeKm').value;
-            showCities(latitude, longitude, nb, radius);
-        }
-
-        /*
-        * Fonction pour appeler l'API
-        */
-        function showCities(latitude, longitude, nb, radius) {
-            $.ajax({
-                url: 'http://localhost:3000/api?latitude=' + latitude + '&longitude=' + longitude + '&nb=' + nb + '&radius=' + radius,
-                type: 'GET',
-                success: function (data) {
-                    removeCities();
-                    var cities = data;
-                    var cityMarkerTemplate = document.querySelector('.city-marker-template');
-
-
-                    for (var i = 0; i < cities.length; i++) {
-                        var city = cities[i];
-                        var cityCoordinates = degreesToPixel(city.latitude, city.longitude);
-                        var cityMarker = cityMarkerTemplate.cloneNode(true);
-                        cityMarker.classList.remove('city-marker-template');
-                        cityMarker.classList.add('city-marker');
-                        cityMarker.hidden = false;
-                        cityMarker.style.left = cityCoordinates.x + 'px';
-                        cityMarker.style.top = cityCoordinates.y + 'px';
-                        cityMarker.title = 'City: ' + city.name + ', \n Distance: ' + city.distance.toFixed(0) + ' km';
-                        cityMarker.id = 'city-marker-' + i; // Ajoutez un identifiant unique
-                        document.getElementById('map-container').appendChild(cityMarker);
-                        citiesList(city, i); // Passez l'index à la fonction citiesList
-                    }
-                    // Initialise les tooltips
-                    $('[data-toggle="tooltip"]').tooltip();
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
-            });
-        }
-        /*
-        * Fonction pour afficher la liste des villes
-        */
-        function citiesList(city, index) {
-            var cityList = document.getElementById('city-list');
-            var cityMarker = document.getElementById('city-marker-' + index);
-            var listItem = document.createElement('li');
-            var summary = document.createElement('summary');
-
-            listItem.classList.add('city-item');
-            listItem.id = 'city-item-' + index; // Ajoutez un identifiant unique
-            summary.textContent = city.name;
-
-            listItem.appendChild(summary);
-            cityList.appendChild(listItem);
-
-            // Ajoutez des gestionnaires d'événements pour les événements mouseover et mouseout
-            listItem.addEventListener('mouseover', function () {
-                document.getElementById('city-marker-' + index).style.transform = 'translate(-50%, -50%) scale(1.5)';
-                $('#city-marker-' + index).tooltip('show');
-
-            });
-            listItem.addEventListener('mouseout', function () {
-                document.getElementById('city-marker-' + index).style.transform = 'translate(-50%, -50%)';
-                $('#city-marker-' + index).tooltip('hide');
-            });
-            cityMarker.addEventListener('mouseover', function () {
-                listItem.style.backgroundColor = '#f5f5f5';
-                listItem.style.fontWeight = 'bold';
-                listItem.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
-            });
-            cityMarker.addEventListener('mouseout', function () {
-                listItem.style.backgroundColor = '';
-                listItem.style.fontWeight = '';
-            });
-
-            listItem.addEventListener('click', function () {
-                var cityName = this.textContent;
-                var cityInfo = city.latitude + ', ' + city.longitude + ', ' + city.population + ', ' + city.distance.toFixed(0) + ' km';
-
-                document.getElementById('cityName').textContent = cityName;
-                document.getElementById('cityInfo').textContent = cityInfo;
-
-
-                document.getElementById('infoBox').style.display = 'block';
-            });
-        }
-        /*
-        * Fonction pour supprimer les marqueurs de villes
-        */
-        function removeCities() {
-            var cityList = document.getElementById('city-list');
-            cityList.innerHTML = ''; // Clear the list
-            var cities = document.querySelectorAll('.city-marker');
-            for (var i = 0; i < cities.length; i++) {
-                cities[i].remove();
-            }
-        }
-    </script>
+    <script src="script/script.js"></script>
 </body>
 
 </html>

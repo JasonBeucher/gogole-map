@@ -3,7 +3,6 @@
     "axios": "^1.6.5",
     "bootstrap": "^5.3.2",
     "cors": "^2.8.5",
-    "cypress": "^13.6.2",
     "express": "^4.18.2",
     "simplebar": "^6.2.5"
   },
@@ -12,8 +11,12 @@
   "description": "Gogole Map Client",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "cypress open"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.6.4"
+  }
 }

@@ -1,3 +1,6 @@
+body {
+    background-color: #C6ECFF !important;
+}
 .container {
     display: flex;
     justify-content: center;
@@ -5,8 +8,94 @@
     height: 100vh;
 }
 
-
-.filter-container {
-    flex: 1;
-    padding-left: 50px;
+.map-container {
+    position: relative;
+    width: 850px;
+    height: 850px;
+    text-align: center;
 }
+
+#marker {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+
+    pointer-events: none;
+}
+
+.city-marker {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+}
+
+.city-marker:hover {
+    transform: translate(-50%, -50%) scale(1.5);
+}
+
+#city-list {
+    height: 500px;
+    overflow-y: auto;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    scrollbar-width: thin;
+}
+
+.city-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.city-item:hover {
+    background-color: #f5f5f5;
+}
+
+#infoBox {
+    position: fixed;
+    top: 10px;
+    width: 300px;
+    height: auto;
+    overflow: auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: none;
+}
+
+#logo {
+    width: 50%;
+    margin: 14px 22px;
+}
+.filter {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+}
+.slider
+{
+    display: flex; 
+    flex-direction: column;
+}
+#regionFilter {
+    width: 250px;
+}
+#closeInfoBox {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+.sidebar-divider {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #e5e5e5;
+}
+.infoBox{
+    display: none;
+}
+
