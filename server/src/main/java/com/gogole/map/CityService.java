@@ -23,11 +23,14 @@ public class CityService {
 	private List<City> cities;
 
 	public CityService() {
+		DatabaseQuery databaseQuery = new DatabaseQuery("jdbc:mysql://gogole-map_bdd_1:3306/gogolemap", "root", "root");
+
 		try {
 			this.cities = loadCitiesFromJsonFile();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		this.cities = databaseQuery.getCities();
 	}
 
 	public List<City> getAllCities() {
