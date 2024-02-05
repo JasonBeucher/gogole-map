@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  back:
+    build: ./server
+    networks:
+      - front
+      - back
+    entrypoint:
+    - tail
+    - -f
+    ports:  # use ports instead of expose to map ports
+    - 8080:8080
+
+  bdd:
+    build: ./bdd
+    networks:
+      - back
+    ports:
+    - 3306:3306
+
+networks:
+  front:
+  back: 
