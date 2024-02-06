@@ -10,8 +10,6 @@ body {
 
 .map-container {
     position: relative;
-    width: 850px;
-    height: 850px;
     text-align: center;
 }
 
@@ -75,11 +73,13 @@ body {
     display: flex; 
     align-items: center; 
     justify-content: space-between;
+    width: 100%;
 }
 .slider
 {
     display: flex; 
     flex-direction: column;
+    width: 100%;
 }
 #regionFilter {
     width: 250px;
