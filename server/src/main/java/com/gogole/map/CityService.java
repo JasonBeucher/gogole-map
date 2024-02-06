@@ -52,9 +52,6 @@ public class CityService {
 		cities.sort(Comparator.comparingDouble(city ->
 				calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude)));
 
-		System.out.println(region);
-		System.out.println(removeAccents(region));
-
 		// Filtrez les villes dans le rayon spécifié et limitez le nombre de villes à retourner
 		nearestCities = cities.stream()
 				.filter(city -> calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude) <= radius
