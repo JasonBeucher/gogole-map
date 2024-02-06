@@ -10,9 +10,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.text.Normalizer;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,14 +22,14 @@ public class CityService {
 	private List<City> cities;
 
 	public CityService() {
-		DatabaseQuery databaseQuery = new DatabaseQuery("jdbc:mysql://gogole-map_bdd_1:3306/gogolemap", "root", "root");
+		//DatabaseQuery databaseQuery = new DatabaseQuery("jdbc:mysql://gogole-map_bdd_1:3306/gogolemap", "root", "root");
 
 		try {
 			this.cities = loadCitiesFromJsonFile();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		this.cities = databaseQuery.getCities();
+		//this.cities = databaseQuery.getCities();
 	}
 
 	public List<City> getAllCities() {
@@ -46,7 +45,7 @@ public class CityService {
 	}
 
 
-	public List<City> getNearestCities(double latitude, double longitude, int nb, int radius) {
+	public List<City> getNearestCities(double latitude, double longitude, int nb, int radius, int population, String region) {
 		List<City> nearestCities = new ArrayList<>();
 
 		// Triez les villes par distance
@@ -55,7 +54,9 @@ public class CityService {
 
 		// Filtrez les villes dans le rayon spécifié et limitez le nombre de villes à retourner
 		nearestCities = cities.stream()
-				.filter(city -> calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude) <= radius)
+				.filter(city -> calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude) <= radius
+				&& city.getPopulation() >= population
+				&& removeAccents(city.getRegion()).equalsIgnoreCase(removeAccents(region)))
 				.limit(nb)
 				.collect(Collectors.toList());
 
@@ -150,4 +151,20 @@ public class CityService {
 		}
 	}
 
+	static String removeAccents(String input) {
+		return Normalizer.normalize(input, Normalizer.Form.NFD)
+				.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+	}
+
+
+	public List<String> getRegions() {
+		List<City> cities = this.getAllCities();
+		List<String> regions = new ArrayList<String>();
+		for(City city : cities)
+			regions.add(city.getRegion());
+
+
+		Set<String> uniqueRegionsSet = new LinkedHashSet<>(regions); // Utilisation de LinkedHashSet pour maintenir l'ordre d'insertion
+		return new ArrayList<String>(uniqueRegionsSet);
+	}
 }

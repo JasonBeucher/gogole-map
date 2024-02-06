@@ -81,8 +81,9 @@ public class DatabaseQuery {
 				String name = resultSet.getString("name");
 				double latitude = resultSet.getDouble("latitude");
 				double longitude = resultSet.getDouble("longitude");
-				String region = resultSet.getString("region");
 				int population = resultSet.getInt("population");
+				String region = resultSet.getString("region");
+
 
 				cities.add(new City(name, latitude, longitude, region, population));
 				// Faire quelque chose avec les données récupérées

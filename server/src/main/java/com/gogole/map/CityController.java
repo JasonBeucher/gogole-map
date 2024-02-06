@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,10 +32,21 @@ public class CityController {
 	public ResponseEntity<List<City>> getNearestCities(@RequestParam double latitude,
 													   @RequestParam double longitude,
 													   @RequestParam int nb,
-													   @RequestParam int radius) {
+													   @RequestParam int radius,
+													   @RequestParam int population,
+													   @RequestParam String region) {
 
-		List<City> nearestCities = cityService.getNearestCities(latitude, longitude, nb, radius);
+		List<City> nearestCities = cityService.getNearestCities(latitude, longitude, nb, radius, population, region);
 		return new ResponseEntity<>(nearestCities, HttpStatus.OK);
+	}
+
+	@GetMapping("/regions")
+	public ResponseEntity<List<String>> getRegions() {
+
+		List<String> regions = this.cityService.getRegions();
+
+
+		return new ResponseEntity<>(regions, HttpStatus.OK);
 	}
 
 	@PostMapping
