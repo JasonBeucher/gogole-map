@@ -18,6 +18,13 @@ services:
     ports:
     - 3306:3306
 
+  front:
+    build: ./client
+    networks:
+      - front
+    ports:
+      - 3000:3000
+
 networks:
   front:
   back: 
