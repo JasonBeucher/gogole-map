@@ -1,16 +1,14 @@
 FROM mysql:latest
 
-# Définissez les variables d'environnement pour le mot de passe root
-ENV MYSQL_ROOT_PASSWORD root
+# Définir l'encodage par défaut pour la base de données
+ENV MYSQL_DATABASE=gogolemap \
+    MYSQL_USER=user \
+    MYSQL_PASSWORD=user \
+    MYSQL_ROOT_PASSWORD=root \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
 
-# Facultatif : définissez d'autres variables d'environnement si nécessaire, par exemple pour le nom de la base de données par défaut
-# ENV MYSQL_DATABASE gogolemap
-
-# Copiez les scripts SQL dans le conteneur
+# Copiez un script SQL pour initialiser la base de données
 COPY create_database.sql /docker-entrypoint-initdb.d/
-COPY insert_script.sql /docker-entrypoint-initdb.d/
 
-
-# Facultatif : exposez le port MySQL
 EXPOSE 3306
-

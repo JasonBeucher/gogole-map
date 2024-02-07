@@ -22,14 +22,15 @@ public class CityService {
 	private List<City> cities;
 
 	public CityService() {
-		//DatabaseQuery databaseQuery = new DatabaseQuery("jdbc:mysql://gogole-map_bdd_1:3306/gogolemap", "root", "root");
 
 		try {
+			DatabaseQuery databaseQuery = new DatabaseQuery("jdbc:mysql://gogole-map_bdd_1:3306/gogolemap", "root", "root");
 			this.cities = loadCitiesFromJsonFile();
+			this.cities = databaseQuery.getCities();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		//this.cities = databaseQuery.getCities();
+
 	}
 
 	public List<City> getAllCities() {
@@ -56,7 +57,7 @@ public class CityService {
 		nearestCities = cities.stream()
 				.filter(city -> calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude) <= radius
 				&& city.getPopulation() >= population
-				&& removeAccents(city.getRegion()).equalsIgnoreCase(removeAccents(region)))
+				&& (removeAccents(city.getRegion()).equalsIgnoreCase(removeAccents(region))) || region.equalsIgnoreCase("all"))
 				.limit(nb)
 				.collect(Collectors.toList());
 
