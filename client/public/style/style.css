@@ -39,6 +39,7 @@ body {
     padding: 0;
     margin: 0;
     scrollbar-width: thin;
+    scroll-behavior: smooth;
 }
 
 .city-item {
@@ -70,16 +71,20 @@ body {
     margin: 14px 22px;
 }
 .filter {
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
 }
-.slider
-{
-    display: flex; 
+.slider {
+    display: flex;
     flex-direction: column;
     width: 100%;
+}
+#map-img {
+    width: 100%;
+    height: 100%;
+    max-width: 700px;
 }
 #regionFilter {
     width: 250px;
@@ -95,7 +100,76 @@ body {
     border: 0;
     border-top: 1px solid #e5e5e5;
 }
-.infoBox{
+.infoBox {
     display: none;
 }
 
+.filter-labels {
+    font-size: 0.9rem;
+}
+
+
+@media screen and (max-width: 1700px) {
+    /* Styles for screens smaller than 1700px */
+    #regionFilter {
+        width: 200px;
+    }
+    .filter {
+        width: 70%;
+    }
+
+    #city-list {
+        height: 300px;
+    }
+}
+@media screen and (max-width: 1500px) {
+    /* Styles for screens smaller than 1700px */
+    #regionFilter {
+        width: 150px;
+    }
+    .filter {
+        width: 60%;
+    }
+
+    #city-list {
+        height: 250px;
+    }
+}
+@media screen and (max-width: 1200px) {
+    /* Styles for screens smaller than 800px */
+    #regionFilter {
+        width: 100px;
+    }
+    .filter {
+        width: 40%;
+    }
+
+    #city-list {
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    /* Styles for screens smaller than 800px */
+    #regionFilter {
+        width: 100px;
+    }
+    .filter {
+        width: 40%;
+    }
+
+    #city-list {
+        height: 200px;
+    }
+}
+
+
+#filters {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    #filters {
+        display: block;
+    }
+}

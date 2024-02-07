@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gogole Maps</title>
     <link rel="icon" href="medias/favico.png" type="image/png">
     <link rel="stylesheet" href="style/style.css">
@@ -26,18 +26,17 @@
                     <img id="logo" src="medias/logo.png" alt="Gogole Maps">
                     <h6
                         class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>Filters</span>
+                        <span>Filtres</span>
                     </h6>
                     <ul class="nav flex-column mb-2">
                         <div class="nav-item">
                             <div class="nav-link">
                                 <div class="filter">
                                     <div class="slider">
-                                        <label for="citiesSlider">Number of Cities</label>
+                                        <label class="filter-labels" id="citiesSliderLabel" for="citiesSlider">Nombre de villes : 50</label>
                                         <input name="citiesSlider" type="range" min="0" max="200" value="50"
-                                            class="slider" id="citiesNum">
+                                            class="slider-element" id="citiesNum">
                                     </div>
-                                    <span id="citiesNumValue">50</span>
                                 </div>
                             </div>
                             </li>
@@ -46,11 +45,10 @@
                                 <div class="nav-link">
                                     <div class="filter">
                                         <div class="slider">
-                                            <label for="rangeSlider">Range (Km)</label>
+                                            <label class="filter-labels" id="rangeLabel" for="rangeSlider">Radius (km) : 50</label>
                                             <input name="rangeSlider" type="range" min="0" max="200" value="50"
-                                                class="slider" id="rangeKm">
+                                                class="slider-element" id="rangeKm">
                                         </div>
-                                        <span id="rangeKmValue">50</span>
                                     </div>
                                 </div>
                                 </li>
@@ -58,11 +56,11 @@
                                     <div class="nav-link">
                                         <div class="filter">
                                             <div class="slider">
-                                                <label for="rangeSlider">Population</label>
-                                                <input name="rangeSlider" type="range" min="0" max="200" value="50"
-                                                    class="slider" id="rangeKm">
+                                                <label class="filter-labels" id="populationLabel" for="population">Population minimale : 10000</label>
+                                                <input name="population" type="range" min="5000" max="200000" value="10000"
+                                                    class="slider-element" id="population">
                                             </div>
-                                            <span id="rangeKmValue">50</span>
+                                        
                                         </div>
                                     </div>
                                     </li>
@@ -70,11 +68,9 @@
                                         <div class="nav-link">
                                             <div class="filter">
                                                 <div class="slider">
-                                                    <label for="regionFilter">Region</label>
+                                                    <label class="filter-labels for="regionFilter">Region</label>
                                                     <select id="regionFilter" class="form-control">
-                                                        <option value="">Toutes les regions</option>
-
-                                                        <!-- Other options will be added dynamically -->
+                                                        <option value="all">Toutes les regions</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -117,6 +113,9 @@
                 </div>
             </main>
 
+        </div>
+        <div class="row" id="filters">
+            <!-- Contenu des filtres -->
         </div>
     </div>
 
