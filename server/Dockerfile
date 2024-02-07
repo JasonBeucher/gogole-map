@@ -3,6 +3,8 @@ LABEL authors="thomas"
 
 WORKDIR /server
 
-COPY ./target/demo-0.0.1-SNAPSHOT.jar /server
+COPY ./target/demo-0.0.1-SNAPSHOT.jar /server/app.jar
 
-ENTRYPOINT ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
