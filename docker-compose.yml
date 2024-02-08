@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   bdd:
-    container_name: gogole-map_bdd_1
+    container_name: gogole-map-bdd
     build: ./bdd
     networks:
       - back
@@ -11,10 +11,10 @@ services:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       interval: 15s
       timeout: 5s
-      retries: 3
+      retries: 5
 
   back:
-    container_name: gogole-map-back-1
+    container_name: gogole-map-back
     build: ./server
     networks:
       - front
@@ -31,7 +31,7 @@ services:
 
 
   front:
-    container_name: gogole-map_front_1
+    container_name: gogole-map-front
     build: ./client
     networks:
       - front
