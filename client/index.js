@@ -27,7 +27,7 @@ app.get('/api/nearest', async (req, res) => {
   var population = req.query.population;
   var region = req.query.region;
   try {
-    const response = await axios.get("http://gogole-map-back-1:8080/api/cities/nearest?latitude="+latitude+"&longitude="+longitude+"&nb="+nb+"&radius="+radius+"&population="+population+"&region="+region);
+    const response = await axios.get("http://gogole-map-back:8080/api/cities/nearest?latitude="+latitude+"&longitude="+longitude+"&nb="+nb+"&radius="+radius+"&population="+population+"&region="+region);
     res.send(response.data);
   } catch (error) {
     console.error('Error:', error);
@@ -37,7 +37,7 @@ app.get('/api/nearest', async (req, res) => {
 
 app.get('/api/regions', async (req, res) => {
   try {
-    const response = await axios.get("http://gogole-map-back-1:8080/api/cities/regions");
+    const response = await axios.get("http://gogole-map-back:8080/api/cities/regions");
     res.send(response.data);
   } catch (error) {
     console.error('Error:', error);

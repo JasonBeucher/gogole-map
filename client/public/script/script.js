@@ -134,6 +134,8 @@ function placeMarker(event) {
         latitude: latitude,
         longitude: longitude
     };
+    marker.dataset.latitude = latitude;
+    marker.dataset.longitude = longitude;
     var nb = document.getElementById('citiesNum').value;
     var radius = document.getElementById('rangeKm').value;
     var population = document.getElementById('population').value;
@@ -173,6 +175,7 @@ function showCities(latitude, longitude, nb, radius, population, region) {
                 // Stockage des coordonnées de la ville dans les attributs data-
                 cityMarker.dataset.latitude = city.latitude;
                 cityMarker.dataset.longitude = city.longitude;
+                
                 document.getElementById('map-container').appendChild(cityMarker);
                 citiesList(city, i); // Passez l'index à la fonction citiesList
             }
