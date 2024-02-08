@@ -1,56 +1,116 @@
+const coordCoinHautGauche = [51.39882174293374, -5.332754245480544];
+const coordCoinBasDroit = [41.70469610254452, 8.529800125775425];
+var carteWidth = document.getElementById('map-img').offsetWidth;
+var carteHeight = document.getElementById('map-img').offsetHeight;
+
 var mapImg = document.getElementById('map-img');
 var citiesNum = document.getElementById('citiesNum');
 var rangeKm = document.getElementById('rangeKm');
+var population = document.getElementById('population');
+var regionFilter = document.getElementById('regionFilter');
 
 citiesNum.value = 50;
 rangeKm.value = 50;
-mapImg.ondragstart = function () { return false; };
-citiesNum.addEventListener('input', function () {
-    document.getElementById('citiesNumValue').textContent = this.value;
+mapImg.ondragstart = function() {
+    return false;
+};
+citiesNum.addEventListener('input', function() {
+    document.getElementById('citiesSliderLabel').textContent = "Nombre de villes : " + this.value;
 });
 
-rangeKm.addEventListener('input', function () {
-    document.getElementById('rangeKmValue').textContent = this.value;
+rangeKm.addEventListener('input', function() {
+    document.getElementById('rangeLabel').textContent = "Radius (km) :" + this.value;
 });
 
-document.getElementById('closeInfoBox').addEventListener('click', function () {
+population.addEventListener('input', function() {
+    document.getElementById('populationLabel').textContent = "Population minimale : " + this.value;
+});
+
+document.getElementById('closeInfoBox').addEventListener('click', function() {
     document.getElementById('infoBox').style.display = 'none';
 });
-const coordCoinHautGauche = [51.39882174293374, -5.332754245480544];
-const coordCoinBasDroit = [41.70469610254452, 8.529800125775425];
-const carteWidth = document.getElementById('map-img').offsetWidth;
-const carteHeight = document.getElementById('map-img').offsetHeight;
+
+if (regionFilter) {
+    $.ajax({
+        url: 'http://localhost:3000/api/regions',
+        type: 'GET',
+        success: function(data) {
+            var regions = data;
+            var regionFilter = document.getElementById('regionFilter');
+            for (var i = 0; i < regions.length; i++) {
+                var region = regions[i];
+                var option = document.createElement('option');
+                option.value = region;
+                option.textContent = region;
+                regionFilter.appendChild(option);
+            }
+        },
+        error: function(error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+window.onresize = function() {
+    // Mise à jour des dimensions de la carte
+    carteWidth = document.getElementById('map-img').offsetWidth;
+    carteHeight = document.getElementById('map-img').offsetHeight;
+    // Récupération de tous les marqueurs de ville
+    var cityMarkers = document.querySelectorAll('.city-marker');
+    // Pour chaque marqueur de ville
+    for (var i = 0; i < cityMarkers.length; i++) {
+        // Récupération des coordonnées de la ville
+        var latitude = cityMarkers[i].dataset.latitude;
+        var longitude = cityMarkers[i].dataset.longitude;
+        console.log(latitude, longitude)
+        // Conversion des coordonnées en pixels
+        var cityCoordinates = degreesToPixel(latitude, longitude);
+
+        // Mise à jour de la position du marqueur
+        cityMarkers[i].style.left = cityCoordinates.x + 'px';
+        cityMarkers[i].style.top = cityCoordinates.y + 'px';
+    }
+};
 /*
-* Fonction qui convertit des coordonnées en pixels en coordonnées en degrés
-*/
+ * Fonction qui convertit des coordonnées en pixels en coordonnées en degrés
+ */
 function pixelsToDegrees(x, y) {
-    console.log(x)
-    console.log(y)
+    var carteWidth = document.getElementById('map-img').offsetWidth;
+    var carteHeight = document.getElementById('map-img').offsetHeight;
     const latitude = coordCoinHautGauche[0] - (y / carteHeight) * (coordCoinHautGauche[0] - coordCoinBasDroit[0]);
     const longitude = coordCoinHautGauche[1] + (x / carteWidth) * (coordCoinBasDroit[1] - coordCoinHautGauche[1]);
-    return { latitude: latitude, longitude: longitude };
+    return {
+        latitude: latitude,
+        longitude: longitude
+    };
 }
+
 function degreesToPixel(latitude, longitude) {
+    var carteWidth = document.getElementById('map-img').offsetWidth;
+    var carteHeight = document.getElementById('map-img').offsetHeight;
     const x = carteWidth * (longitude - coordCoinHautGauche[1]) / (coordCoinBasDroit[1] - coordCoinHautGauche[1]);
     const y = carteHeight * (coordCoinHautGauche[0] - latitude) / (coordCoinHautGauche[0] - coordCoinBasDroit[0]);
-    return { x: x, y: y };
+    return {
+        x: x,
+        y: y
+    };
 }
 /*
-* Fonction qui convertit des coordonnées en degrés en coordonnées en pixels
-*/
+ * Fonction qui convertit des coordonnées en degrés en coordonnées en pixels
+ */
 function getCoordinates(event) {
     var img = document.getElementById('map-img');
     var rect = img.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
     var coord = pixelsToDegrees(x, y)
-    console.log(coord)
+
     return coord;
 }
 
 /*
-* Fonction qui place le marqueur sur la carte
-*/
+ * Fonction qui place le marqueur sur la carte
+ */
 function placeMarker(event) {
     var mapContainer = document.getElementById('map-container');
     var marker = document.getElementById('marker');
@@ -70,19 +130,25 @@ function placeMarker(event) {
     infoBox.style.transform = 'translate(-50%, 0)';
     var latitude = coord.latitude;
     var longitude = coord.longitude;
+    marker.value = {
+        latitude: latitude,
+        longitude: longitude
+    };
     var nb = document.getElementById('citiesNum').value;
     var radius = document.getElementById('rangeKm').value;
-    showCities(latitude, longitude, nb, radius);
+    var population = document.getElementById('population').value;
+    var region = document.getElementById('regionFilter').value;
+    showCities(latitude, longitude, nb, radius, population, region);
 }
 
 /*
-* Fonction pour appeler l'API
-*/
-function showCities(latitude, longitude, nb, radius) {
+ * Fonction pour appeler l'API
+ */
+function showCities(latitude, longitude, nb, radius, population, region) {
     $.ajax({
-        url: 'http://localhost:3000/api?latitude=' + latitude + '&longitude=' + longitude + '&nb=' + nb + '&radius=' + radius,
+        url: 'http://localhost:3000/api/nearest?latitude=' + latitude + '&longitude=' + longitude + '&nb=' + nb + '&radius=' + radius + '&population=' + population + '&region=' + region,
         type: 'GET',
-        success: function (data) {
+        success: function(data) {
             removeCities();
             var cities = data;
             var cityMarkerTemplate = document.querySelector('.city-marker-template');
@@ -104,21 +170,26 @@ function showCities(latitude, longitude, nb, radius) {
                     'Population: ' + '<strong>' + city.population + '</strong>' + '<br>' +
                     'Region: ' + '<strong>' + city.region + '</strong>';
                 cityMarker.id = 'city-marker-' + i; // Ajoutez un identifiant unique
+                // Stockage des coordonnées de la ville dans les attributs data-
+                cityMarker.dataset.latitude = city.latitude;
+                cityMarker.dataset.longitude = city.longitude;
                 document.getElementById('map-container').appendChild(cityMarker);
                 citiesList(city, i); // Passez l'index à la fonction citiesList
             }
             // Initialise les tooltips
-            $('[data-toggle="tooltip"]').tooltip({ html: true });
+            $('[data-toggle="tooltip"]').tooltip({
+                html: true
+            });
 
         },
-        error: function (error) {
+        error: function(error) {
             console.error('Error:', error);
         }
     });
 }
 /*
-* Fonction pour afficher la liste des villes
-*/
+ * Fonction pour afficher la liste des villes
+ */
 function citiesList(city, index) {
     var cityList = document.getElementById('city-list');
     var cityMarker = document.getElementById('city-marker-' + index);
@@ -133,26 +204,30 @@ function citiesList(city, index) {
     cityList.appendChild(listItem);
 
     // Ajoutez des gestionnaires d'événements pour les événements mouseover et mouseout
-    listItem.addEventListener('mouseover', function () {
+    listItem.addEventListener('mouseover', function() {
         document.getElementById('city-marker-' + index).style.transform = 'translate(-50%, -50%) scale(1.5)';
         $('#city-marker-' + index).tooltip('show');
 
     });
-    listItem.addEventListener('mouseout', function () {
+    listItem.addEventListener('mouseout', function() {
         document.getElementById('city-marker-' + index).style.transform = 'translate(-50%, -50%)';
         $('#city-marker-' + index).tooltip('hide');
     });
-    cityMarker.addEventListener('mouseover', function () {
+    cityMarker.addEventListener('mouseover', function() {
         listItem.style.backgroundColor = '#f5f5f5';
         listItem.style.fontWeight = 'bold';
-        listItem.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+        // Get the parent container
+        var container = listItem.parentNode;
+
+        // Scroll the container
+        container.scrollTop = listItem.offsetTop - container.offsetTop;
     });
-    cityMarker.addEventListener('mouseout', function () {
+    cityMarker.addEventListener('mouseout', function() {
         listItem.style.backgroundColor = '';
         listItem.style.fontWeight = '';
     });
 
-    listItem.addEventListener('click', function () {
+    listItem.addEventListener('click', function() {
         var cityName = city.name;
 
         document.getElementById('cityName').textContent = cityName;
@@ -167,8 +242,8 @@ function citiesList(city, index) {
 }
 
 /*
-* Fonction pour supprimer les marqueurs de villes
-*/
+ * Fonction pour supprimer les marqueurs de villes
+ */
 function removeCities() {
     var cityList = document.getElementById('city-list');
     cityList.innerHTML = ''; // Clear the list

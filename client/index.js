@@ -19,13 +19,25 @@ app.get('/', (req, res) => {
 });
 
 // Define a route for the API
-app.get('/api', async (req, res) => {
+app.get('/api/nearest', async (req, res) => {
   var latitude = req.query.latitude;
   var longitude = req.query.longitude;
   var nb = req.query.nb;
   var radius = req.query.radius;
+  var population = req.query.population;
+  var region = req.query.region;
   try {
-    const response = await axios.get('http://localhost:8080/api/cities/nearest?latitude='+latitude+'&longitude='+longitude+'&nb='+nb+'&radius='+radius);
+    const response = await axios.get("http://localhost:8080/api/cities/nearest?latitude="+latitude+"&longitude="+longitude+"&nb="+nb+"&radius="+radius+"&population="+population+"&region="+region);
+    res.send(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('An error occurred while calling the external API');
+  }
+});
+
+app.get('/api/regions', async (req, res) => {
+  try {
+    const response = await axios.get("http://localhost:8080/api/cities/regions");
     res.send(response.data);
   } catch (error) {
     console.error('Error:', error);
