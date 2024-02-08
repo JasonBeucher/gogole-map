@@ -54,12 +54,21 @@ public class CityService {
 				calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude)));
 
 		// Filtrez les villes dans le rayon spécifié et limitez le nombre de villes à retourner
+		/*
 		nearestCities = cities.stream()
 				.filter(city -> calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude) <= radius
 				&& city.getPopulation() >= population
 				&& (removeAccents(city.getRegion()).equalsIgnoreCase(removeAccents(region))) || region.equalsIgnoreCase("all"))
 				.limit(nb)
 				.collect(Collectors.toList());
+		 */
+		nearestCities = cities.stream()
+				.filter(city -> (region.equalsIgnoreCase("all") || removeAccents(city.getRegion()).equalsIgnoreCase(removeAccents(region)))
+						&& calculateDistance(city.getLatitude(), city.getLongitude(), latitude, longitude) <= radius
+						&& city.getPopulation() >= population)
+				.limit(nb)
+				.collect(Collectors.toList());
+
 
 		// Mettez à jour la distance pour chaque ville
 		nearestCities.forEach(city -> city.setDistance(
