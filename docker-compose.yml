@@ -14,7 +14,7 @@ services:
       retries: 3
 
   back:
-    container_name: gogole-map_back_1
+    container_name: gogole-map-back-1
     build: ./server
     networks:
       - front

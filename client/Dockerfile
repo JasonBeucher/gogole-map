@@ -16,9 +16,5 @@ COPY . .
 # Exposition du port sur lequel l'application écoute
 EXPOSE 3000
 
-# Définition du script d'entrée
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
 # Commande pour démarrer le serveur Node.js
-CMD ["/start.sh"]
+ENTRYPOINT ["node", "index.js"]
