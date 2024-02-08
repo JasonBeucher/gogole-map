@@ -19,10 +19,6 @@ services:
     networks:
       - front
       - back
-    entrypoint:
-    - java
-    - -jar
-    - app.jar
     ports:  # use ports instead of expose to map ports
     - 8080:8080
     depends_on:
