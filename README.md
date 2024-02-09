@@ -23,7 +23,7 @@ docker-compose up
 
 6. Vous pouvez désormais utiliser l'application en plaçant un point sur la carte. 
 
-# Documentation de l'api
+# Documentation de l'API
 1. Ouvrir : http://localhost:3000/api-doc
 
 2. Entrer les paramètre
@@ -79,4 +79,4 @@ On utilise également JUnit pour réalisé les tests unitaires. Mais aussi Mocki
 On a aurait pu utilisé la biblitothèque Hibernate qui est un middleware de mappage objet-relationnel (ORM) il simplifie l'accès aux bases dedonnées relationnelles en permettant aux développeurs de manipuler les données sous forme d'objets Java. Mais, comme on ne fait pas demodification dans la base de données, il n'est pas vraiment utile dans notre cas. Il l'aurait été si, par exemple, on avait ajouté unformulaire pour ajouter/modifier des villes.
 
 # Notre expérience
-
+Nous avons trouvé ce projet très intéressant et complet. En effet, l'utilisation de docker et d'une API nous a permis de découvrir de nouvelle méthode de création d'application. Nous avons aussi apprécié la liberté laissée tout au cours de ce projet, nous avons pu découvrir les technologies souhaitées ainsi que de renforcer des connaissances sur d'autres déjà connus.
