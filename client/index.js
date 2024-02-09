@@ -17,6 +17,9 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
+app.get('/api-doc', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/api-doc.html'));
+});
 
 // Define a route for the API
 app.get('/api/nearest', async (req, res) => {

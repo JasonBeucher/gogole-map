@@ -21,18 +21,28 @@ docker-compose up
 
 5. Ouvrir le client : http://localhost:3000
 
+6. Vous pouvez désormais utiliser l'application en plaçant un point sur la carte. 
+
+# Ouvrir la documentation de l'api
+1. Ouvrir : http://localhost:3000/api-doc
+
+2. Entrer les paramètre
+
+3. Envoyer la requête
+
+
 # Nos choix architecturaux
 ## L'application global
 	Notre application est a but pédagogique, elle n'aura pas besoin d'être maintenu par la suite. Donc, nous avons décidé de partir sur une architecture monolithique morderne, séparé en 3 parties : base de données, backend et front.
 	Chaque partie a sont propre conteneur. Ils sont répartis en sur 2 réseaux. Les conteneurs gogole-map-bdd et gogole-map-back sont sur le réseau back et les conteneurs gogole-map-back et gogole-map-front sont sur le réseau front.
 
 ## Le backend
-├── server
-│   ├── City 
-│   ├── CityService
-│   ├── CityController
-│   ├── DatabaseQuery
-│   ├── DemoApplication
+	├── server
+	│   ├── City 
+	│   ├── CityService
+	│   ├── CityController
+	│   ├── DatabaseQuery
+	│   ├── DemoApplication
 
 Le backend comporte 5 classes :
 - La classe City représentant une entité de la ville dans l'application.
@@ -69,3 +79,4 @@ Le backend comporte 5 classes :
 	On a aurait pu utilisé la biblitothèque Hibernate qui est un middleware de mappage objet-relationnel (ORM) il simplifie l'accès aux bases de données relationnelles en permettant aux développeurs de manipuler les données sous forme d'objets Java. Mais, comme on ne fait pas de modification dans la base de données, il n'est pas vraiment utile dans notre cas. Il l'aurait été si, par exemple, on avait ajouté un formulaire pour ajouter/modifier des villes.
 
 # Notre expérience
+

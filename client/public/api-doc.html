@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>API Documentation</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" href="medias/favico.png" type="image/png">
+    <style>
+        #result {
+            max-height: 400px;
+            overflow: auto;
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="container py-4">
+    <img id="logo" src="medias/logo.png" alt="Gogole Maps">
+    <h1 class="mb-4">API Documentation</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Endpoint: /api/cities/nearest</h2>
+        </div>
+        <div class="card-body">
+            <p>Permet de récuperer les villes les plus prôches selon plusieurs paramètre.</p>
+
+            <form id="nearestForm" class="mb-3">
+                <div class="form-group">
+                    <label for="latitude">Latitude:</label>
+                    <input type="text" id="latitude" name="latitude" class="form-control" placeholder="Ex: 48.4975" required>
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Longitude:</label>
+                    <input type="text" id="longitude" name="longitude" class="form-control" placeholder="Ex: 1.8757" required>
+                </div>
+                <div class="form-group">
+                    <label for="nb">Number:</label>
+                    <input type="text" id="nb" name="nb" class="form-control" placeholder="Ex: 50" required>
+                </div>
+                <div class="form-group">
+                    <label for="radius">Radius (km):</label>
+                    <input type="text" id="radius" name="radius" class="form-control" placeholder="Ex: 50" required>
+                </div>
+                <div class="form-group">
+                    <label for="population">Population (minimale):</label>
+                    <input type="text" id="population" name="population" class="form-control" placeholder="Ex: 10000" required>
+                </div>
+                <div class="form-group">
+                    <label for="region">Region:</label>
+                    <select id="region" name="region" class="form-control">
+                        <option value="all">Toutes les regions</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+
+            <div id="result" class="alert alert-secondary" role="alert"></div>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Endpoint: /api/cities/regions</h2>
+        </div>
+        <div class="card-body">
+            <p>Permet de récuperer toutes les régions.</p>
+    
+            <form id="regionsForm" class="mb-3">
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+    
+            <div id="regionsResult" class="alert alert-secondary" role="alert"></div>
+        </div>
+    </div>
+    
+    <script src="script/api-script.js"></script>
+</body>
+
+</html>
