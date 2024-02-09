@@ -175,6 +175,8 @@ function showCities(latitude, longitude, nb, radius, population, region) {
                 // Stockage des coordonnées de la ville dans les attributs data-
                 cityMarker.dataset.latitude = city.latitude;
                 cityMarker.dataset.longitude = city.longitude;
+                cityMarker.dataset.distance = city.distance;
+                cityMarker.dataset.population = city.population;
                 
                 document.getElementById('map-container').appendChild(cityMarker);
                 citiesList(city, i); // Passez l'index à la fonction citiesList
