@@ -1,27 +1,33 @@
-// Import the express module
+/*
+  Ce fichier est le point d'entrée de l'application.
+  Il utilise le module express pour créer un serveur web.
+  Il utilise également le module axios pour appeler des API externes.
+*/
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
-const cors = require('cors'); // Import cors module
+const cors = require('cors');
 
-// Create an instance of express
+// Crée une application express
 const app = express();
 
-// Use cors middleware
+// Active CORS pour autoriser les requêtes depuis n'importe quelle origine
 app.use(cors());
 
-// Serve static files from the "public" directory
+// Active le middleware pour parser le JSON
 app.use(express.static('public'));
 
-// Define a route for the root path ("/")
+// Route principale
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
+
+// Route pour afficher la documentation de l'API
 app.get('/api-doc', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/api-doc.html'));
 });
 
-// Define a route for the API
+// Route pour récuperer les villes les plus proches
 app.get('/api/nearest', async (req, res) => {
   var latitude = req.query.latitude;
   var longitude = req.query.longitude;
@@ -38,6 +44,7 @@ app.get('/api/nearest', async (req, res) => {
   }
 });
 
+// Route pour récuperer les régions
 app.get('/api/regions', async (req, res) => {
   try {
     const response = await axios.get("http://gogole-map-back:8080/api/cities/regions");
@@ -48,7 +55,7 @@ app.get('/api/regions', async (req, res) => {
   }
 });
 
-// Start the server on port 3000
+// Démarre le serveur sur le port 3000
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });

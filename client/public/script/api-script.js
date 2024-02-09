@@ -1,73 +1,73 @@
-var regionFilter = document.getElementById('region');
-        if (regionFilter) {
-            fetch('http://localhost:3000/api/regions')
-                .then(response => response.json())
-                .then(data => {
-                    var regions = data;
-                    var regionFilter = document.getElementById('region');
-                    for (var i = 0; i < regions.length; i++) {
-                        var region = regions[i];
-                        var option = document.createElement('option');
-                        option.value = region;
-                        option.textContent = region;
-                        regionFilter.appendChild(option);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        document.getElementById('nearestForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the form from being submitted normally
-
-            // Check if all fields are filled
-            if (!event.target.checkValidity()) {
-                alert('Veuillez remplir tous les champs.');
-                return;
+/*
+----------------------------------Nearest form----------------------------------
+*/
+var regionFilter = document.getElementById('region'); // Menu déroulant des régions
+if (regionFilter) {
+    // Initialise le menu déroulant des régions
+    fetch('http://localhost:3000/api/regions')
+        .then(response => response.json())
+        .then(data => {
+            var regions = data;
+            var regionFilter = document.getElementById('region');
+            for (var i = 0; i < regions.length; i++) {
+                var region = regions[i];
+                var option = document.createElement('option');
+                option.value = region;
+                option.textContent = region;
+                regionFilter.appendChild(option);
             }
+        })
+        .catch(error => console.error('Error:', error));
+}
 
-            // Get the form data
-            var formData = new FormData(event.target);
+document.getElementById('nearestForm').addEventListener('submit', function (event) {
+    event.preventDefault()
 
-            // Build the URL
-            var url = 'http://localhost:3000/api/nearest?latitude=' + formData.get('latitude') +
-                '&longitude=' + formData.get('longitude') +
-                '&nb=' + formData.get('nb') +
-                '&radius=' + formData.get('radius') +
-                '&population=' + formData.get('population') +
-                '&region=' + formData.get('region');
+    if (!event.target.checkValidity()) { // Vérifie si les champs sont remplis
+        alert('Veuillez remplir tous les champs.');
+        return;
+    }
 
-            // Execute the request
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    // Display the result on the page
-                    document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
-                })
-                .catch(error => console.error('Error:', error));
-        });
+    var formData = new FormData(event.target); // Récupère les données du formulaire
 
-        document.getElementById('regionsForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from being submitted normally
-        
-            // Check if all fields are filled
-            if (!event.target.checkValidity()) {
-                alert('Veuillez remplir tous les champs.');
-                return;
-            }
-        
-            // Get the form data
-            var formData = new FormData(event.target);
-        
-            // Build the URL
-            var url = 'http://localhost:3000/api/regions';
-    
-        
-            // Execute the request
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    // Display the result on the page
-                    document.getElementById('regionsResult').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
-                })
-                .catch(error => console.error('Error:', error));
-        });
+    // Construit l'URL de la requête
+    var url = 'http://localhost:3000/api/nearest?latitude=' + formData.get('latitude') +
+        '&longitude=' + formData.get('longitude') +
+        '&nb=' + formData.get('nb') +
+        '&radius=' + formData.get('radius') +
+        '&population=' + formData.get('population') +
+        '&region=' + formData.get('region');
+
+    // Exécute la requête
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            // Affiche le résultat
+            document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+/*
+----------------------------------Regions form----------------------------------
+*/
+document.getElementById('regionsForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    if (!event.target.checkValidity()) { // Vérifie si les champs sont remplis
+        alert('Veuillez remplir tous les champs.');
+        return;
+    }
+    var formData = new FormData(event.target); // Récupère les données du formulaire
+
+    var url = 'http://localhost:3000/api/regions'; // Construit l'URL de la requête
+
+    // Exécute la requête
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            // Affiche le résultat
+            document.getElementById('regionsResult').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        })
+        .catch(error => console.error('Error:', error));
+});

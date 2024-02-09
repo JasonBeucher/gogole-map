@@ -3,14 +3,14 @@ describe('template spec', () => {
     cy.visit("localhost:3000");
   });
 
-  
+  // Fonction pour vérifier les valeurs des filtres
   function checkCitiesValue(){
-    // Remplacez '.city-marker' par le sélecteur CSS correct pour les marqueurs de ville
     cy.get('.city-marker').its('length').should('be.greaterThan', 0);
 
     cy.get('#citiesNum').invoke('val').then((citiesNum) => {
       cy.get('.city-marker').its('length').should('be.lessThan', Number(citiesNum)+1);
     });
+
     cy.get('#population').invoke('val').then((populationFilter) => {
       cy.get('#rangeKm').invoke('val').then((radiusFilter) => {
     
@@ -51,7 +51,7 @@ describe('template spec', () => {
 
 
   it("Change filter value", () => {
-    // Change filter slider value
+    // Changer les valeurs des filtres
     cy.get('#population').invoke('val').then((populationFilter) => {
       cy.get('#population').invoke('val', parseInt(populationFilter) + 100000).trigger('input');
     });

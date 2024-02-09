@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gogole Map</title>
     <link rel="icon" href="medias/favico.png" type="image/png">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+    <!-- JS -->
     <script src="script/jquery.min.js"></script>
     <script src="script/bootstrap.bundle.min.js"></script>
     
@@ -18,6 +21,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
+            <!-- Sidebar -->
             <nav class="col-md-2 d-none d-md-block bg-white sidebar">
                 
                 <div class="sidebar-sticky">
@@ -26,6 +30,7 @@
                         class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span>Filtres</span>
                     </h6>
+                    <!-- Filtres & Liste de villes -->
                     <ul class="nav flex-column mb-2">
                         <div class="nav-item">
                             <div class="nav-link">
@@ -81,7 +86,7 @@
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                
+                <!-- Carte -->
                 <div class="container">
                     <div class="map-container" id="map-container">
                         <img src="medias/carte.png" alt="" id="map-img" onclick="placeMarker(event)">
@@ -97,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- Info Box -->
                 <div class="col-md-3">
                     <div id="infoBox" class="infoBox">
                         <i id="closeInfoBox" class="fas fa-times" ></i>
@@ -111,9 +116,6 @@
                 </div>
             </main>
 
-        </div>
-        <div class="row" id="filters">
-            <!-- Contenu des filtres -->
         </div>
     </div>
 
