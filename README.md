@@ -30,6 +30,8 @@ docker-compose up
 
 3. Envoyer la requête
 
+# Test d'acceptation
+Le chemin du fichier qui contient les tests d'acceptation est /client/cypress/e2e/spec.cy.js
 
 # Nos choix architecturaux
 ## L'application global
