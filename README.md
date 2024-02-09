@@ -31,7 +31,7 @@ docker-compose up
 # Documentation de l'API
 1. Ouvrir : http://localhost:3000/api-doc
 
-2. Entrer les paramètre
+2. Entrer les paramètres
 
 3. Envoyer la requête
 
