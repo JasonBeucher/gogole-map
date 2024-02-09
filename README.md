@@ -18,6 +18,11 @@ docker-compose build
 ```bash
 docker-compose up
 ```
+4-2. Si jamais le backend ne se lance pas avec cette erreur "gogole-map-back exited with code 1"
+```bash
+^C
+docker-compose up
+```
 
 5. Ouvrir le client : http://localhost:3000
 
