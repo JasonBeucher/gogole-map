@@ -48,7 +48,10 @@ Le backend comporte 5 classes :
 	 En ce qui concerne les appels à l'API nous avons utilisé Axios qui permet de faire des requêtes asynchrones assez simplement.
 	 Pour les tests d'acceptation nous avons choisi d'utiliser Cypress pour sa simplicité et notre expérience sur celui-ci.
 	 Pour le style de l'application nous utilisons à Bootstrap ainsi que FontAwesome pour nous permettre d'utiliser des icônes.
-
+### Alternatives
+	Nous aurions pu utiliser Vue, react ou Angular pour le front mais a préféré faire le choix de la simplicité n'importe lequel de ses autres techniques aurait pu fonctionner.
+	Pour les tests d'acceptation nous aurions pu utiliser Selenium mais nous avions moins d'expérience sur celui-ci et ont donc préféré la syntaxe 	simple et la rapidité de Cypress qui était un choix cohérent avec express.
+	
 ## Les technologies
 ### API REST
 	Imposé par le sujet, les api REST permettent de maniere sécurisé de transférer des données via http.
