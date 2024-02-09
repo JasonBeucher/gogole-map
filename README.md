@@ -52,7 +52,7 @@ Le backend comporte 5 classes :
 - La classe classe CityService est responsable de la logique métier liée aux villes dans l'application. Le choix de séparer la logique métier dans un service distinct favorise la réutilisabilité et la testabilité du code.
 - Ce composant nous sert a exécuter des requêtes SQL sur la base de données. Le choix de séparer la logique d'accès aux données dans un composant distinct favorise la modularité et la maintenabilité du code. Elle est utilisé pour lire les villes de la base de données.
 
-## Le fronted
+## Le frontend
 	├── cypress
 	│   ├── e2e
 	│   │   ├── spec.cy.js 
