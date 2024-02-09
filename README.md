@@ -43,7 +43,11 @@ Le backend comporte 5 classes :
 ## Le back
 	Nous avons choisi Java pour le backend. Java est un choix populaire pour le développement backend en raison de sa robustesse, de sa performance et de sa portabilité. Il dispose du framework backend Spring Boot qui facilite le développement d'application Java basées sur des services web, en fournissant des fonctionnalités telles que l'injection de dépendances, la configuration automatique et la prise en charge de l'application web.
 ## Le front
-	 Nous avons choisi JavaScript pour le front c'est le langage de programmation de facto pour le développement web frontend. Il est largement pris en charge par tous les navigateurs modernes.
+	 Nous avons choisi Node js plus précisément Javascript pour le front c'est le langage de programmation de facto pour le développement web frontend. Il est largement pris en charge par tous les navigateurs modernes.
+	 Nous avons utilisé le framework Express.js qui est le framework le plus standard pour du développement Node.js nous ne voyons pas l'utilité d'utiliser un framework plus complexe pour ce projet.
+	 En ce qui concerne les appels à l'API nous avons utilisé Axios qui permet de faire des requêtes asynchrones assez simplement.
+	 Pour les tests d'acceptation nous avons choisi d'utiliser Cypress pour sa simplicité et notre expérience sur celui-ci.
+	 Pour le style de l'application nous utilisons à Bootstrap ainsi que FontAwesome pour nous permettre d'utiliser des icônes.
 
 ## Les technologies
 ### API REST
