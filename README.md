@@ -51,6 +51,21 @@ Le backend comporte 5 classes :
 - La classe CityController est un contrôleur REST responsable de la gestion des requêtes HTTP liées aux villes. Le choix d'utiliser un contrôleur REST facilite l'exposition d'une API web pour interagir avec les données des villes. 
 - La classe classe CityService est responsable de la logique métier liée aux villes dans l'application. Le choix de séparer la logique métier dans un service distinct favorise la réutilisabilité et la testabilité du code.
 - Ce composant nous sert a exécuter des requêtes SQL sur la base de données. Le choix de séparer la logique d'accès aux données dans un composant distinct favorise la modularité et la maintenabilité du code. Elle est utilisé pour lire les villes de la base de données.
+
+## Le fronted
+	├── cypress
+	│   ├── e2e
+	│   │   ├── spec.cy.js 
+	│   ├── fixtures
+	│   ├── support
+	├── public
+	│   ├── medias 
+	│   ├── script
+	│   ├── style
+	│   ├── api-doc.html
+	│   ├── index.html
+	│── index.js
+
 # Langages, technologies, packages et middlewares utilisés
 ## Le back
 Nous avons choisi Java pour le backend. Java est un choix populaire pour le développement backend en raison de sa robustesse, de saperformance et de sa portabilité. Il dispose du framework backend Spring Boot qui facilite le développement d'application Java basées surdes services web, en fournissant des fonctionnalités telles que l'injection de dépendances, la configuration automatique et la prise encharge de l'application web.
